@@ -1,0 +1,122 @@
+\section{A Review on Existing Literature}\label{review_existing_lit}
+
+Our work is related to two streams of literature: reinforcement learning (RL) algorithms applied to complex sequential decision-making problems and dynamic pricing with non-myopic customers. Strategic customers and patient customers are the two representative ways that many studies define non-myopic customer models. To understand sellers' pricing strategies, strategic buyers try to postpone purchases until they are as patient as possible (Aviv and Pazgal, 2008; Den Boer, 2015). Conversely, patient consumers stay in the market for a certain amount of time and buy when the price is lower than they are willing to pay (Cao et al., 2015; Liu and Cooper, 2015; Lobel, 2020; Zhang and Jasin, 2022).
+
+\vspace{1em}
+
+Customers now find it difficult to predict price sequences due to the growing complexity of airline pricing policies, which supports the patient customer model. Liu and Cooper (2015) showed an ideal pricing strategy with decreasing cycles for homogeneous patient customers. A polynomial-time algorithm for calculating the best pricing strategies under varying patient levels was presented by Lobel (2020). However, this is rarely the case in the airline industry, and these models typically assume that customer valuation and patience distributions are known a priori. An online learning and optimization algorithm that does not presume prior knowledge of these distributions was proposed by Zhang and Jasin (2022) to fill this gap; however, their work is still inflexible enough not to account for non-stationary demand and finite inventory constraints. 
+
+\vspace{1em}
+
+To overcome these constraints, this study loosens three fundamental presumptions: finite inventory, non-stationary demand, and unknown customer-related distributions. Because only a few seats are available for a single flight, inventory-aware pricing strategies are required. Additionally, leisure and business travellers are two distinct customer segments the airline industry usually encounters, with varying arrival patterns and willingness to pay (Bondoux et al., 2020; Wittman and Belobaba, 2018). Relying on fixed or estimated distributions may lead to inconsistent revenue because of the impact of uncontrollable external factors on demand. These relaxations render earlier structural assumptions irrelevant and greatly increase the problem's computational complexity. 
+
+\vspace{1em}
+
+Furthermore, learning-based methods are required due to the lack of prior distributional knowledge, which leads to the use of model-free RL algorithms that don't make any assumptions about environmental dynamics (Rana and Oliveira, 2014; Mao and Shen, 2018; Krasheninnikova et al., 2019; Seo et al., 2021; Yang et al., 2022; Dixit and ElSheikh, 2022). Revenue management has long used RL, a tried-and-true solution technique for sequential decision-making problems (Rana and Oliveira, 2014; Pandey et al., 2020; Yang et al., 2022). Gosavi et al. (2002) were the first to apply reinforcement learning to airline revenue management by simulating random arrivals and cancellations across fare classes. 
+
+\vspace{1em}
+
+A bounded actor-critic algorithm for seat allocation was created by Lawhead and Gosavi (2019), improving upon the computational problems associated with traditional actor-critic techniques. Deep Q-networks (DQN) were used to analyse dynamic airline pricing by Bondoux et al. (2020). Despite these advancements, previous research frequently ignores strategic consumer behaviours and non-stationary arrivals, necessitating effective RL exploration methods. While Yu et al. (2022) and Selim et al. (2022) employed reachability-based exploration techniques, Osband et al. (2016) used multiple networks to address early-phase reward sparsity for complex problems. Hong et al. (2018) and Parker-Holder et al. (2020) supported behavioural diversity, while Lopes et al. (2012) encouraged exploration through empirical learning progress in model-based RL. 
+
+\vspace{1em}
+
+Hafez et al. (2019, 2020) introduced intrinsic rewards for increased sample efficiency, while Sekar et al. (2020) suggested latent disagreement for exploratory planning. Tutsoy (2021a, b) introduced adaptive parametric models that use instantaneous rewards to improve policies in the face of real-world uncertainties. These frameworks are especially helpful when external incentives, such as airline pricing, might not provide clear direction. We adopt the model by Osband et al. (2016) and propose reward shaping as a future direction, given our goal of evaluating a new RL algorithm in this domain. Our study fills in three important gaps. First, using realistic airline assumptions, we present a novel Markov Decision Process (MDP) framework for dynamic pricing with patient customers.
+
+\vspace{1em}
+
+A novel sequential decision-making formulation that considers historical price sequences is part of this. Second, we evaluate several RL algorithms to determine which works best. As far as we know, this is the first study to address dynamic pricing with patient clients under the specified relaxations. Third, we examine how pricing policies are structured with and without patient customer considerations, providing airlines with helpful information to help them increase revenue through consumer segmentation. 
+
+\vspace{1em}
+
+Seong Bae Jo, Gyu M. Lee, and Ilk Yeong Moon (2024) identify how integrating strategic and non-myopic customer behavior affects airline dynamic pricing. Historically, dynamic pricing mechanisms presuppose customers cannot wait for a better offer, which realistic customers do not do anyway. Jo and colleagues offer an MDP framework to model this non-myopic behavior where the ‘history of offered prices’ is adopted as a state variable. That way, the model can mimic the erratic nature and non-stationary demand prevalent in the airline market.
+
+\vspace{1em}
+
+Jo et al. claim that when adopting model-free algorithms and deep exploration-based RL not used in prior works, airlines can create a more realistic pricing model reflecting the unknown distribution of customers’ preferences for additional services. This study demonstrates that while making decisions on strategic customers, the price can be high for a short time. Then, low prices bring higher revenues than a continuous daily hike in prices in increased pricing models.
+
+\vspace{1em}
+
+Jin Min Gao, Mei Long Le, and Yuan Fang (2022) also studied the impact of strategic and myopic passengers on dynamic pricing for a related reason. They categorize passengers into two broad categories, high- and low-valuation, depending on passenger evaluation of tickets. Like Jo et al., Gao and his team constructed the dynamic pricing model based on the utility of both the airline and consumer sides. They also use reinforcement learning – specifically, Q-learning – to address the pricing issue in a Markov decision process model.
+
+\vspace{1em}
+
+Their evidence states that as the percentage of strategic passengers increases, the airline should employ a more conservative pricing approach. Namely, the price increase should gradually go through corresponding changes or be based on the percentage of high- or low-valuation strategic passengers. An incremental price increase reduces the likelihood of giving in to price-high prices altogether while still getting some revenue from the frame strategic customers. According to the model, the means necessary for generating maximal revenues depend on the composition of the flow of passengers, which requires specific operational tactics and strategies from the airlines (Gao et al., 2022).
+
+\vspace{1em}
+
+In other prior work on dynamic pricing, Kevin R Williams (2020) looked into airlines about the influence of dynamic pricing in the market and how the seating capacity can be allocated to customers with different willingness to pay. Williams introduces a stochastic demand model with characteristics from the revenue management model and pricing models typical for empirical economics. He identifies that dynamic pricing is most applicable in dealing with demand shocks and intertemporal consumer behavior variations. 
+
+\vspace{1em}
+
+Analyzing the dynamics of dynamic pricing, Williams also described the connection between dynamic pricing and intertemporal price discrimination. Capacity management can be achieved through speed in pricing strategy since consumers' arrival rate and willingness to pay vary. Williams introduces a stochastic demand component and other features from revenue management and practical pricing models widely used in empirical economics. He also realizes that it is most helpful in dealing with demand shocks and temporal cross-section and time series differences in consumers' preferences. Through fares that vary with the demand levels, airlines can give attractive fares to early-booking customers who are less willing to pay while holding back the high fares to late-booking passengers with a higher time utility. According to Williams, dynamic pricing is closely related to intertemporal price discrimination. In this context, airlines can attain a desirable capacity because they can adjust their prices with the rhythm of consumers' arrivals and the prices they are willing to pay. This strategy drives optimal revenues and optimizes seat stock and distribution, with plenty of deep discounts geared to satiating the price-sensitive segments to the exclusion of the high-yielding, time-sensitive consumer (Williams, 2020).
+
+\vspace{1em}
+
+In recent years, boarding fees and seat selection alongside ticket prices have been critical sources of revenue in the air transport industry. Elena Kosonen's (2020) master's thesis examines how these additional services could be priced more effectively using machine learning algorithms. She recruited stakeholders to perform co-creation sessions that led to the creation of a machine-learning model for more apt customer pricing. By understanding customer value through pricing optimization tools, namely pricing controls and internal airline data, this model, proposed by Kosonen, delivers segmented price points for the ancillary services, thus enhancing the organization's revenues and boasting its profit margins.
+
+\vspace{1em}
+
+Even though this machine learning model was interrupted due to COVID-19, Kosonen's work shows that data science solutions can bring value for ancillary pricing. Machine learning allows different services, such as extra baggage charges, to be set based on customer profiles and other factors in a real-time fashion. While these ADDITIONAL services also grew into one of the many critical factors determining profits, getting more by applying machine learning for better pricing may also be an appealing option (Kosonen, 2020).
+
+\vspace{1em}
+
+Consumers and PDP : An analysis of perceptions of personalization and fairness Priester, Anna, Robbert, Thomas, & Roth, Stefan (2020) The level of price individualization they investigated depended on the base for segmentation (location versus purchase history) and its relationship to fairness perceptions. The authors also noted that consumers consider segment pricing as fair compared to individual pricing and pricing by location as more reasonable than pricing by past purchase behavior.
+
+\vspace{1em}
+
+Priester and colleagues' investigation indicates that the PDP strategy could improve airline revenue; however, its application should consider privacy and fairness considerations. This is always the case because it reminds the customers of the personal information they share with the company to be given customized prices. Therefore, the above perspective should guide airlines that are interested in adopting PDP to ensure that pricing policies should not overemphasize the use of customer data while at the same time ensuring fairness (Priester et al., 2020).
+
+\vspace{1em}
+
+From the initial attempts to use stochastic demand models to more recent advances in reinforcement learning and machine learning, airlines are better positioned to target prices to meet different consumers and demand changes. According to the research conducted by Jo et al. (2024) as well as Gao et al. (2022), recognizing such a strategic context itself helps airlines improve their selling prices for better profitability; Williams (2020) also reflects that dynamic pricing policy plays a crucial role in optimizing the capacity on the means of transport. However, Priester et al. (2020) note that the given strategies might also raise consumer suspicions about the carriers' motives, which is why the airlines need to perfect the given strategy regarding how consumers receive them to guarantee success.
+
+\vspace{1em}
+
+The dynamic pricing model introduced to KAL by Naman Shukla and colleagues in 2019 was created by Deeper Solutions, and the principle utilized proposed that the rates of routes differ according to supply and demand to achieve greater revenues. Their approach was customer interaction during live booking sessions on the airline's website, with ancillary products as the variable for demand and price optimization. Their model consisted of two key components: A binary classification model for ancillary purchase probability and a revenue optimization model for the best price for the sale of the ancillary product (Shukla et al., 2019). They tried different algorithms, such as logistic mapping and deep neural networks. They realized that their DNN-CL model improved better than traditional pricing systems, mainly in determining the sensitivity of demand for the prices and setting the correct prices. However, some constraints, such as limited and fixed price range and focus on only one accessory during online testing, showed that the extent of applying dynamic pricing in this context was still not fully unleashed (Shukla et al., 2019).
+
+\vspace{1em}
+
+Rafael R. Varella, in his paper published in 2017, investigated the effects of new Low-Cost Carriers (LCC). He applied an econometric model to show how mainline airlines changed their tariff strategies to strategies for the new entrant carriers. The research that reviewed more than 96428 price quotes offered by ten key airlines in Brazil identified that incumbents lowered the fares for early bookings to lure price-sensitiveprice-sensitiveprice-sensitive travelers primarily targeted by LCCsLCCs (Varella et al., 2017). It acknowledged that incumbents raised the number of airfares available through OTAs by 11% and cut basic fares from 3.4% to 9% for bookings one or two months before travel. The change occurred due to high competition in the early time for booking, holding the higher price near the departure date for non-willing-to-haggle clients. This pricing response also promoted competition and reallocated consumer surplus, whereby early bookers benefited most while late bookers were worst affected.
+
+\vspace{1em}
+
+Building on top of dynamic pricing models in the supply function literature, in 2020, Daniel F. Otero and Raha Akhavan-Tabatabaei argued for a stochastic dynamic pricing model that enumerates the inter-arrival time between customer bookings and the likelihood of purchase. It proposed a way to match better the cost of selling a seat at a lower price than its face value or not selling the seat at all. Otero and Akhavan-Tabatabaei's statistical model enhanced prior approaches using phase-type distributions to estimate customer arrival times. As their work led to a more realistic, high-fidelity representation of the data at hand, it is more appropriate for applied/empirical work (Otero & Akhavan-Tabatabaei, 2020). This model was used to solve the problem of where to set the right price because no airline wanted to overprice its fares, and yet, at the same time, no airline wanted to risk leaving seats empty. However, the researchers, as indicated by Otero and Akhavan-Tabatabaei (2020), observed that more research is needed to support the refinement and, thus, the usability of the presented model in field contexts.
+
+\vspace{1em}
+
+Similarly, Ryan J. Lawhead and Abhijit Gosavi presented two algorithms in 2019, Discounter and Averagsolving, solving the Discounted and Andand Average setting, They we; they., airline revenue management. They pointed to deep learning architectures as the key approach, which was attracting much attention among AI researchers. The discounted reward algorithm was tested using minor sample problems where the best policy was known a priori. In contrast, the average reward algorithm was tested on a large-scale testbed using industrial data. These algorithms helped present an understanding of how dynamic pricing models could be further adapted by airlines by implementing reinforcement learning and deep learning approaches. Despite the benefits of these ideas, there is the possibility of further research and development (Lawhead & Gosavi, 2019).
+
+\vspace{1em}
+
+On the other hand, in the year 2022, Jin Min Gao and colleagues showed that airlines indeed contain both strategic and myopic customers; they proposed a dynamic pricing model that considered both airline and passenger benefits. The study modeled this problem as a discrete Markov decision process (MDP) using reinforcement learning and applied Q-learning to solve this MDP. Based on the customer activities, the researchers ascertain that the proportion of strategic passengers affected the price policies. The study also noted that pricing strategies should be changed gradually by the specific proportion of strategic passengers' high- and low-valuation (Gao et al., 2022).
+
+\vspace{1em}
+
+On the other hand, the successful work of Seong Bae Jo and his collaborators in 2024 introduced the MDP framework to solve non-myopic customer problems—consumers who delay their purchases to enjoy better promotions. Analyzing the nature of unforeseen and non-stationary demand, Jo's research incorporated model-free algorithms into the airline framework. It revealed that if airlines consider patient, non-myopic customers, they could fluctuate between high and low prices to improve their revenue rather than stick to the linear pricing model. It was also revealed that this fluctuating price model provided greater overall sales than the more conventional gradual rise in price (Jo et al., 2024). In addition, the study pointed out that to generate the highest revenue, airlines ought to set very high prices for a long time and set relatively low prices only occasionally if they expect a large proportion of patient customers.
+
+\vspace{1em}
+
+To sum up the present research, it is possible to paint a picture of the way different carriers have implemented dynamic pricing into strategy and examined the strengths and weaknesses of its widespread use throughout the global airline market through the three following studies: It is for this reason that although some recent advancements have been noted in terms of modeling strategic customer behavior and the integration of AI-powered pricing models, there is still much work to be done in continuously unlocking the value of this evolving space.
+
+
+\newpage
+
+
+\section{Research Gaps}\label{research_gaps}
+\noindent The literature on dynamic pricing in the airline industry has significantly progressed in understanding consumer behavior, especially the differences between strategic and myopic passengers. However, several research gaps remain, including integrating a wider range of customer segments beyond high and low valuations. Future research could examine how behavioral, psychographic, and demographic factors influence pricing sensitivity and preferences.
+
+\vspace{1em}
+
+Furthermore, while research looks at how well model-free algorithms and reinforcement learning work for pricing strategies, it usually overlooks how well these models adapt to sudden shifts in the market or outside shocks like pandemics or recessions. Finally, the research could look into how dynamic pricing systems can be designed to react in real time to unanticipated events.
+
+\vspace{1em}
+
+The effect of these perceptions on consumer behavior is still poorly understood, even though some studies recognize privacy and fairness concerns in personalized pricing. Airlines' pricing strategies must be informed by an understanding of how perceived fairness and trust impact repurchase intentions and loyalty personalized pricing contexts.
+
+\vspace{1em}
+
+A critical gap is the lack of studies on the Indian market and its unique consumer behavior in response to dynamic pricing strategies; most research has been conducted in Western contexts, where market conditions, cultural factors, and consumer expectations differ significantly; understanding how Indian customers perceive and respond to dynamic pricing can help tailor strategies that resonate with local sentiments. Most current research also uses cross-sectional data, meaning that longitudinal studies that monitor how consumers react to dynamic pricing over time are necessary to understand better the long-term viability and efficacy of these pricing models. 
+
+
+
+

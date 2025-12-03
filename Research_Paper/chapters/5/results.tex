@@ -1,0 +1,77 @@
+
+\section{Results and analysis}
+
+Airlines modify their pricing strategy to alternate between high and low prices over the selling horizon when they identify the presence of patient customers. The conventional monotonic price increase over time contrasts with this dynamic pricing strategy. The idea is based on revenue optimization: strategically timed low prices lower the risk of unsold inventory close to departure. In contrast, high prices target customers with a high willingness to pay. Consequently, this strategy raises the percentage of episodes that end with unsold seats and those that end at the point of departure—nevertheless, overall revenue increases despite increased unsold inventory. Interestingly, the average difference between high and low price points widens, and the frequency of high price charges increases as customer patience (W) rises.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Resuls 1.png}
+
+    \label{reward}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{Results 2 (2).png}
+    \caption{Number of episodes grouped by terminated period and the number of remaining seats.}
+
+\end{figure}
+
+
+
+This implies that by reserving expensive slots for extremely patient, high-reservation-price passengers, airlines are getting more value out of them. As a result, fewer inexpensive slots are offered. The observed pattern lends credence to the claim that dynamic, non-stationary systems involving patient and strategic customer behavior are better suited for non-monotonic, alternating pricing. 
+
+\subsection{Price Distribution for Tickets on Different Airlines}
+
+A thorough examination of the distribution of ticket prices among Indian airlines shows a great deal of variation. With a mean of about ₹9,087 and a median of ₹8,372, the box plot indicates that prices range from roughly ₹1,759 to ₹79,512. The wide range of pricing strategies used by different carriers is highlighted by this widespread and the high standard deviation of ₹4,611. Full-service airlines like Jet Airways (Business class) charge premium rates, while budget airlines like IndiGo regularly offer lower fares. Price increases brought on by last-minute reservations, popular travel times, or seat-class upgrades are indicated by multiple outliers. These pricing anomalies imply that static pricing models are insufficient to represent the intricacies of the actual airline industry.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Result 3.png}
+    
+    
+\end{figure}
+
+Instead, the data emphasizes the necessity of dynamic pricing strategies that consider factors like service class, demand spikes, customer type, and time of purchase. Additionally, the dispersion suggests significant space for optimization using cutting-edge revenue management systems, which could more effectively match pricing to passenger willingness to pay and market demand. Recognizing these patterns supports the potential efficacy of dynamic pricing algorithms based on machine learning in practical settings. 
+
+\subsection{Price Differences Based on Route}
+
+Significant differences influenced by various market factors can be seen when comparing the average ticket prices for various domestic routes. Flights from Bangalore to New Delhi, for instance, routinely have the highest average fares, often surpassing ₹12,000. In contrast, flights from Chennai to Kolkata are substantially less expensive, with average fares of less than ₹5,000. Demand elasticity, market competition, flight distance, and route popularity are the reasons behind these disparities. While routes with lots of options show downward price pressures from airline competition, heavily trafficked routes with little competition typically command higher prices. 
+
+Furthermore, higher demand for business travel is frequently reflected in metropolitan connections, which helps to justify premium pricing. When creating airline pricing policies, the analysis emphasizes route-level optimization. Route-specific features, such as seasonal patterns, local demand curves, and customer segmentation, must be taken into account by dynamic pricing models. In addition to improving the accuracy of price-setting algorithms, route-based knowledge guarantees that airlines maintain their competitiveness while optimizingoptimizing profits. Airlines can customize their pricing strategies for every flight path by incorporating route data into reinforcement learning models such as BDQN. 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Result 4.png}
+
+    \label{fig5}
+\end{figure}
+
+\subsection{Flight Duration vs. Cost of Ticket}
+
+A general trend of rising costs with longer travel times can be seen in the relationship between flight duration and ticket price. A scatter plot, however, shows considerable variability within this pattern upon closer inspection. Even though longer flights are usually more expensive, many short-duration flights are also costly, which is a result of other factors like the popularity of the destination, the time it takes to book, and the class of travel. Outliers are particularly noticeable on long-haul flights, indicating that demand spikes, strategic pricing, and stopovers impact these costs and travel time. This intricacy shows that conventional models considering duration or distance cannot explain pricing decisions. 
+
+More accuracy is provided by multi-variable methods that consider behavioral and temporal factors. These findings support the need for dynamic pricing schemes considering demand elasticity, booking time, passenger segmentation, and travel time. Airlines can maximize revenue from various customer segments by matching price to value perception across flight durations. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Result 5.png}
+    
+    
+\end{figure}
+
+According to this distribution, most travelers plan their trips balanced. From a pricing standpoint, the substantial presence of strategic customers calls for applying dynamic pricing models that predict customer behavior over time. Pricing optimization gains a temporal dimension because these customers are more likely to act on anticipated fare trends or wait for better offers.
+
+On the other hand, smaller Myopic segment frequently accepts higher prices in exchange for immediacy and makes impulsive or early reservations. To set unique pricing strategies that can dynamically adjust based on real-time demand signals and passenger profiles, airlines must thoroughly understand this behavioral segmentation. That maximizes revenue and reduce inventory risk. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Result 6.png}
+    
+    
+\end{figure}
+
+Closely followed by strategic passengers, this indicates a high demand for responsive, intelligent pricing systems that incentivize patience and information gathering. The fact that myopic passengers continue to be the smallest group suggests that there is little room for profit through early high pricing.
+
+According to insights, airlines must adjust their prices according to time and in response to anticipated passenger reactions. For example, offering high prices at the outset might not turn off Neutral or Myopic customers. Still, it might cause Strategic customers to put off purchases, lowering early revenue. Dynamic pricing mechanisms, particularly those powered by reinforcement learning such as Q-learning or BDQN, can instantly adjust such behavior patterns. To maintain profitability for all passenger types, segment-aware algorithms test and modify prices over time, matching prices to perceived value and behavioral patterns. 
+

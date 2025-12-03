@@ -1,0 +1,346 @@
+%\chapter{Proposed Methodology}
+%\vspace{-1cm}
+%\noindent \rule{6.6in}{0.01in}
+
+
+
+
+    
+
+
+
+
+
+
+
+
+\section{Patient customer dynamics }
+As previously mentioned, our system's customers are patient and possess three attributes that influence their decision-making process: arrival time, reservation cost, and patience level. Customers' maximum willingness to pay is indicated by the reservation price. The customer purchases the product if the seller's sale price is less than or equal to the customer's reservation price. The customers' maximum willingness to wait is indicated by their patience level. Up to $t + 1$ purchasing opportunities are available to customers with a patience level of $t$. In particular, when a customer accesses the system during period $k$, the sale price and the reservation price from period $k$ are compared to period $k + t$. One makes a purchase and exits the system immediately if they see that the sale price is less than or equal to their reservation price during those times. Otherwise, the longer a person waits to make a purchase, the less patient they become. One exits the system without purchasing if their level of patience declines. Fig. 1(a) displays a flow chart illustrating these patient customer dynamics.
+ 
+\vspace{1em}
+
+ An initial level of patience for a customer who visited during period $k$ is a random variable defined in $\mathcal{T}$, a finite set of non-negative integers with a maximum value of $T$.A probability distribution with the cumulative density function $F_{k,\tau}(\cdot)$ governs the reservation price for a customer who arrives during period $k$ with patience level $\tau$. The number of customers arriving during period $k$ with patience level $\tau$ has a probability density function of $g_{k,\tau}(\cdot)$. We assume that $f_{k,\tau}(\cdot)$, $g_{k,\tau}(\cdot)$, and $F_{k,\tau}(\cdot)$ are unaffected by the seller's price and inventory during each period. All of the study's uncertainties are parametric and related to the client. The number of customers arriving during each period, reservation costs, and customer patience levels are the specific sources of uncertainty. 
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{Methodology 1.png} % Replace 'filename.png' with your image file name
+    \caption{Methodology Framework.}
+    \label{fig:label}
+\end{figure}
+
+
+
+
+% \includegraphics[width=\linewidth, angle=90]{filename.png} % Rotate 90 degrees
+
+% \usepackage{rotating}
+
+% \begin{sidewaysfigure}
+%     \centering
+%     \includegraphics[width=0.8\textheight]{bsc framework.jpeg} % Use height instead of width to fit
+%     \caption{This is a sideways figure.}
+%     \label{fig:sideways}
+% \end{sidewaysfigure}
+
+
+\section{Marcov Decision Process}
+A popular framework for simulating discrete sequential decision-making problems is the Markov Decision Process (MDP) (Sutton & Barto, 2018). MDPs are frequently used to effectively represent problems involving uncertain or stochastic demand, such as inventory management and dynamic pricing (Lawhead & Gosavi, 2019; Ma et al., 2021; Ahiska & King, 2015; He et al., 2023). The four main parts of an MDP are usually states, actions, rewards, and transition probabilities. The state is a representation of the system's present state. This work treats states as fully observable by the decision-maker, in contrast to some previous studies that treat the decision-maker observations independently from the actual system states (Pandey et al., 2020; Shou et al., 2022; Bautista-Montesano et al., 2022). The Markov property is broken if the transition depends on more than just the state and action at that moment. Violating this requirement may harm the quality of the solutions since most algorithms for locating optimal solutions depend on the Bellman optimality equation, which presumes the Markov property. The following section shows how the Markov property can be preserved by structuring the state variables in our dynamic pricing model. 
+ 
+\vspace{1em}
+
+To formulate the airline dynamic pricing problem described at the beginning of Section 3 as an MDP with finite states and actions, we consider an airline as a decision-maker. The behavior of the airline can be presented in Fig. 1(b). The action space contains possible prices that the airline can offer to customers. Because the airline's objective in this paper is to maximize the total revenue over the finite selling periods, we set the revenue gained in each period as a reward. In this study, we define the discount factor of the MDP as one. Before defining our state variables, we define some notations:
+
+ 
+\vspace{1em}
+
+We model the airline pricing problem as a Markov Decision Process (MDP), following Jo et al.\ (2024). A MDP is defined by states, actions, transition dynamics, and a reward function.
+
+\begin{itemize}
+    \item $q_t$ : Number of remaining seats in period $t$
+    \item $l_t$ : Remaining time to departure in period $t$
+    \item $W$ : Maximum patience level that customers can have
+    \item $s_t$ : State of the system in period $t$
+    \item $a_t$ : Price offered by the decision-maker in period $t$
+    \item $\mathcal{S}$ : Finite set of states
+    \item $\mathcal{A}$ : Finite set of actions
+    \item $t_k$ : Group of customers who arrive in period $t$ with patience level $k$
+\end{itemize}
+Initially, we determine the likelihood that the quantity of seats sold during time period $t$ will be $i$. 
+
+For $t' \leq t \leq t' + k$, a customer in $\mathcal{G}_{t'}^k$ behaves as follows:
+
+If the customer's reservation price is less than every price in the set $\{a_{t'}, a_{t'+1}, \ldots, a_{t-1}\}$, then the customer does not make a purchase until period $t$. 
+
+Furthermore, the customer makes a purchase during period $t$ if their reservation price is greater than or equal to the offered price in that period, i.e., the lowest price in the set $\{a_{t'}, a_{t'+1}, \ldots, a_t\}$. 
+
+Based on these facts, we can calculate the likelihood that a customer in $\mathcal{G}_{t'}^k$ will make a purchase during period $t$, where $t' \leq t \leq t'+k$, as follows:
+
+\[
+p_t^1 = \left(F_{t'}^k\left(\min\{a_{t'}, \ldots, a_{t-1}\}\right) - F_{t'}^k(a_t)\right)^+
+\]
+
+Here, $F_{t'}^k(\cdot)$ denotes the cumulative distribution function (CDF) of reservation prices for customers in $\mathcal{G}_{t'}^k$, and $(\cdot)^+$ represents the positive part function, i.e., $\max\{0, \cdot\}$.
+If the number of customers arriving during time $t'$ with a patience level $k$ is $n_{t'}^k$, then the likelihood that $l_{t'}^k$ seats are sold by customers in $\mathcal{G}_{t'}^k$ during period $t$ is given by the binomial probability:
+
+\[
+\Pr\left(X_{t',t}^k = l_{t'}^k\right) = \binom{n_{t'}^k}{l_{t'}^k} (p_{t',t}^k)^{l_{t'}^k} (1 - p_{t',t}^k)^{n_{t'}^k - l_{t'}^k}
+\]
+
+Using this, we can now compute the probability that exactly $i$ seats are sold during period $t$, given the historical price path $H_t = \{a_{t-W}, \ldots, a_{t-1}\}$.
+
+\begin{itemize}
+    \item $\bar{P}_{t}^i$: The probability that $i$ seats are sold during period $t$, given $H_t = \{a_{t-W}, \ldots, a_{t-1}\}$.
+    \item $X_{t',t}^k$: A binomial random variable with parameters $n_{t'}^k$ and $p_{t',t}^k$, representing the number of purchases by customers in $\mathcal{G}_{t'}^k$ during period $t$.
+    \item $\mathbf{n}_t$: A vector representing the number of customers in each group $\mathcal{G}_{t'}^k$ for $t - W \leq t' \leq t$ and $t - t' \leq k \leq W$.
+    \item $\mathbf{i}_t$: A vector representing the number of seats sold to customers in each group $\mathcal{G}_{t'}^k$ for $t - W \leq t' \leq t$ and $t - t' \leq k \leq W$.
+    \item $N_{W}^i$: The set of all vectors of $W$ non-negative integers that sum to $i$.
+\end{itemize}
+The likelihood that $i$ seats will be sold during period $t$ is computed based on the fact that customers who arrived during the periods $t - W, \ldots, t$ may still purchase in period $t$. This is expressed as:
+
+\begin{equation}
+\bar{P}_t^i = \sum_{\mathbf{n}_t \geq \mathbf{i}_t} \left[ 
+\left( \prod_{l=0}^{W} \prod_{u=0}^{l} d_t^k(n_{t-W+l}^{W-u}) \right)
+\left( \sum_{\mathbf{i}_t \in N_{\hat{W}}^i} \prod_{l=0}^{W} \prod_{u=0}^{l} 
+\Pr\left( X_{t-W+l, t}^{W-u} = i_{t-W+l}^{W-u} \right) \right)
+\right]
+\label{eq:seat_sales_probability}
+\end{equation}
+
+where:
+
+\begin{itemize}
+    \item $\bar{P}_t^i$: Probability that exactly $i$ seats are sold during period $t$
+    \item $\mathbf{n}_t$: Vector of customer group sizes $n_{t'}^k$ for all relevant $t'$ and $k$
+    \item $\mathbf{i}_t$: Vector of corresponding seat sales from customer groups
+    \item $d_t^k(n)$: Probability mass or weight function (e.g., probability distribution over customer arrivals)
+    \item $X_{t', t}^k$: Binomial random variable for group $\mathcal{G}_{t'}^k$
+    \item $N_{\hat{W}}^i$: Set of all vectors of $\hat{W}$ non-negative integers summing to $i$
+    \item $\hat{W} = \frac{(W+1)(W+2)}{2}$: Total number of $(t', k)$ group combinations over the window $W$
+\end{itemize}
+Equations~(1) and~(2) show that $\bar{P}_t^i$ depends on the price history $\{a_{t-W}, \ldots, a_{t-1}\}$, which represents the prices chosen by the decision-maker during the periods $t-W$ through $t-1$. 
+
+This implies that when customers exhibit patience, the expected number of seats sold in the upcoming period may be significantly misestimated if the decision-maker fails to consider actions taken in the previous $W$ periods. 
+
+Recall that the system state $s_t$ was defined solely using $q_t$ (remaining seats) and $l_t$ (remaining time to departure). In this setup, the system fails to satisfy the \textit{Markov property}, because $\bar{P}_t^i$ is not consistent for identical $s_t$ and $a_t$ when the history of prior actions differs.
+
+Specifically, the transition probability 
+\[
+\Pr(y_{t+1} \mid s_t, a_t)
+\]
+cannot be accurately determined without knowing $\bar{P}_t^i$, where $y_{t+1} = (q_t - i,\, l_t - 1)$. This dependence on historical prices introduces a form of memory into the system, violating the assumption that future states depend only on the current state and action.
+Although invariability is still employed to calculate the transition probability, the consistency is ensured by the fixed set $\{a_{t-W}, \ldots, a_{t-1}\}$ in $s_t$ for the same $\bar{P}_t^i$ and $a_t$. 
+
+It is important to note that Equations~(1) and~(2) are standard equations that capture the stochastic dynamics of the problem under study. However, deriving state variables from these equations can offer a novel perspective for the literature that applies model-free algorithms and formulates the airline revenue management problem as a Markov Decision Process (MDP).
+
+In the context of this study, the airline must decide on a range of prices that may be offered to passengers prior to departure. We refer to these as \textit{pre-defined prices}. One of the agent’s actions is to select a price from this predetermined list and offer it to the clients. 
+The action space $\mathcal{A}$ can be defined as $\{p_1, \ldots, p_A\}$, where each $p_i$ represents a pre-defined price. The action space consists of real numbers that are positive. 
+
+The state space is denoted by $\mathcal{S} = (q, l, H) \in [0, Q] \times [0, T] \times \mathcal{H}_W$, where $H$ is a vector of size $W$ that, as previously mentioned, contains previously offered prices. Here, $Q$ and $T$ are positive integers representing the total number of seats and the selling horizon, respectively.
+
+The function $r(s, a)$ represents the instantaneous reward for taking action $a$ in state $s$. In this study, when the agent offers price $a$ based on state $s$, the reward $r(s, a)$ is defined as the immediate revenue from the sale. 
+ 
+\vspace{1em}
+
+Transition probabilities can be computed using Equation~(2), which captures the dynamics of the system.
+Equation~(2) can be used to compute the transition probabilities. Our objective is to determine the best pricing strategy $\pi$ that optimizes the anticipated total revenue over a limited selling horizon $T$:
+
+\[
+\max_{\pi} \mathbb{E}_{\pi}\left[ \sum_{t=0}^{T-1} r(s_t, a_t) \right]
+\tag{3}
+\]
+
+With the solution methods described in the following section, the agent can learn a pricing policy that is nearly optimal, as it can observe the reward immediately after taking action in a given state. One of the key advantages of Deep Reinforcement Learning (DRL) is its flexibility in solving high-dimensional state-space problems (Gosavii et al., 2002). The dimension of the state space is $W + 2$, as the state $y_t$ consists of $q_t$, $l_t$, and the historical price vector $(a_{t-W}, \dots, a_{t-1})$. Since many actual customers in the airline industry are aware that ticket prices are subject to change, their maximum patience level may be high, which raises the state space's dimension. In RL, it may be unmanageable in a high-dimensional state space if value functions or policy functions are not approximated. Thus, the agent can learn policies for difficult real-world problems by using approximators such as neural networks (Gosavii et al., 2002; Yang et al., 2022).
+
+\section{Deep Q-Network}
+The value-based RL literature has used the parameterised Q function to solve large-scale problems. The Q-function is estimated using fewer parameters rather than tracking Q-values for every state–action pair. As opposed to state-action pairs. After that, they are updated frequently in order to get close to the ideal Q-function. The deep Q-network (DQN), which was proposed by Mnih et al. (2013), is the most widely used value-based algorithm that uses a parameterised Q-function. They approximated Q-functions for learning optimistic control policies for a few Atari 2600 environments using convolutional neural networks. For numerical experiments, we employ Mnih et al. (2015)'s DQN algorithm. Appendix A contains the algorithm's detailed process. 
+
+
+
+\begin{figure}[H]
+
+\centering
+\includegraphics[width=0.6\textwidth]{Methodology 2.png}
+\caption{DQN }
+\label{fig2a}
+\end{figure}
+
+\section{Bootstrapped DQN (BDQN):}
+\noindent  To achieve functional improvements for more difficult environments, some sophisticated RL algorithms based on DQN have been investigated (Van Hasselt et al., 2016; Schaul et al., 2015; Wang et al., 2016). The exploration problem is one of those complex problems. Even though larger rewards can be offered in other states, RL agents can easily become stuck in states that are close to the initial state in an episodic environment when relatively small rewards are offered. When RL agents employ inefficient exploration techniques, such as greedy policies, it takes many episodes to determine the best action. 
+
+
+\begin{figure}[H]
+
+\centering
+\includegraphics[width=0.6\textwidth]{Methodology 3.png}
+\caption{B-DQN }
+\label{fig2b}
+\end{figure}
+
+
+The same exploration problem applies to the dynamic pricing problem of airlines in this study. An RL agent learns suboptimally if it focuses on optimizing rewards from customers who arrive earlier with lower reservation prices because the percentage of customers with higher reservation prices rises over time and the number of seats is limited. In fact, we found that the agent learned pricing policies that focused on the early times of the selling horizon, leading to early episode termination, when we performed numerical experiments using DQN. 
+ 
+\vspace{1em}
+
+As a result, RL algorithms with better exploration techniques would be needed. One of the RL algorithms that has been shown to be successful for episodic exploration in solving difficult problems is Bootstrapped DQN (BDQN), which was proposed by Osband et al. (2016). 
+ Appendix B contains the detailed process of the algorithm. We present the findings of numerical experiments in the following section, which suggest that BDQN is also more efficient in the dynamic pricing environment of airlines. A shared network architecture was proposed by Osband et al. (2016), in which a network directly connected to input data is shared by several Q-networks. To cut down on computational expenses, it learns a feature representation of the input data. However, since our input data is not a two-dimensional image frame, we do not use the architecture. In this scenario, the state variables may be overly shortened by the shared network, which would leave the BDQN agent with inadequate environmental information. As a result, we use Q-networks that directly receive state variables as input when designing the BDQN framework. Like the DQN architecture we employed, each Q-network is built separately. The network architecture of DQN is depicted in Fig. 2(a), while the architecture of BDQN, which is made up of several networks with structures identical to those in Fig. 2(a), is depicted in Fig. 2(b). Five networks with the same structure as DQN are used in BDQN. The hyperparameter values described above are chosen to ensure that the RL algorithms produce sufficient results, which are shown in the following subsection. Python 3 with an Intel Core i5-9400F and 16 GB of RAM is used for all experiments. 
+
+
+\subsection{Comparison between formulations in presence of patience customers}
+
+In this subsection, we develop two distinct MDP formulations.
+The state \( s_t \) is the only element that distinguishes different decision-making contexts. When a Markov Decision Process (MDP) includes a sequence of past actions \( (a_{t-h}, \dots, a_{t-1}) \) as part of its state \( s_t \), it is referred to as an \textit{MDP with action history}. On the other hand, if the state \( s_t \) comprises only the current system state and time, \( (x_t, t) \), without incorporating previous actions, it is referred to as an \textit{MDP without action history}. Therefore, when patient customers are in the system, MDP without action history does not satisfy the Markov property. Even when the Markov property is met, there is no theoretical guarantee that DQN and BDQN will converge or perform better. However, based on the numerical experiment results, we found that the MDP with action history had higher revenue than the one without.
+DQN doesn't create nearly ideal policies. Nonetheless, DQN pushes the agent to investigate less-than-ideal policies during the training episodes. The difference between DQN's revenue and the upper bound may be narrow if the agent chooses the best course of action with probability one during the evaluation episodes and eliminates exploration. 
+
+\begin{table}[htbp]
+\centering
+\caption{Average revenue of evaluation episodes over five random seeds.}
+\label{tab:avg_revenue}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Case} & \textbf{Customer} & \textbf{T} & \textbf{Algorithm} & \begin{tabular}[c]{@{}c@{}}Average Revenue\\ Without Action History\textsuperscript{a} / With Action History\textsuperscript{b}\end{tabular} \\ \hline
+1 & Patient & 20 & DQN  & 66.31 / 71.24 \\ \hline
+2 & Patient & 20 & BDQN & 65.66 / 72.68 \\ \hline
+3 & Patient & 40 & DQN  & 129.82 / 141.32 \\ \hline
+4 & Patient & 40 & BDQN & 131.07 / 144.45 \\ \hline
+5 & Myopic  & 40 & DQN  & 119.69 / 119.13 \\ \hline
+6 & Myopic  & 40 & BDQN & 119.94 / 120.04 \\ \hline
+\end{tabular}
+
+\vspace{0.5em}
+\begin{flushleft}
+\footnotesize
+\textsuperscript{a} Without action history: MDP states include only current state variables. \\
+\textsuperscript{b} With action history: MDP states include past action sequences.
+\end{flushleft}
+\end{table}
+
+DQN doesn't create nearly ideal policies. Nonetheless, DQN pushes the agent to investigate less-than-ideal policies during the training episodes. The difference between DQN's revenue and the upper bound may be narrow if the agent chooses the best course of action with probability one during the evaluation episodes and eliminates exploration. The outcomes of DQN and BDQN in evaluation episodes are shown in Table 1. The mean of the average revenue with action history over five random seeds is indicated by the first value in the last column, while the second value is for entities without action history. Cases 1, 2, 3, and 4 relate to different experimental configurations. Regardless of RL algorithms, the average revenue in the evaluation episodes rises when the action history is incorporated into the state, just like in the training episodes. Furthermore, the optimal expected revenues with infinite inventory in Cases 2 and 4 are 74.45 and 149.8, respectively, and policies derived from DQN and BDQN produce revenue near the upper bounds. These numerical findings suggest that the DRL algorithms can identify nearly optimal policies even in dynamic pricing environments where perfect information is not available.
+
+\subsection{Comparing Pricing Algorithms for Inadequate Inventory and Non-Stationary Demand}
+
+In this subsection, when demand is non-stationary and inventory is inadequate, we illustrate the pricing algorithms using the MDP with action history. One of the most used customer segmentation techniques in the airline industry is the division of customers into leisure and business customers (Li et al., 2014; Bondoux et al., 2020; Varella et al., 2017). In the preceding section, every component of the MDP formulation is defined in the same way, and five runs of 50,000 training episodes are also carried out. According to earlier research, business and leisure clients are presumed to enter the Poisson process (Flapper et al., 2012; Yousuk & Luong, 2013; Yu et al., 2019). 
+As time passes, the arrival rate of leisure customers falls linearly, and the opposite is true for business customers. Although uniform distributions generate reservation prices for business and leisure customers, business customers typically pay higher average prices than leisure customers. It is anticipated that twice as many customers will enter the system as there are seats. We compare each algorithm's performance for a few examples to confirm which is suitable. 
+
+\begin{table}[ht]
+\centering
+\caption{Computational time for each algorithm.}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Figure & $T$ & $W$ & Algorithm & Time (min)$^{a}$ \\
+\hline
+\multirow{3}{*}{Fig. 4(a)} & \multirow{3}{*}{50} & \multirow{3}{*}{11} & DQN & 128.76 \\
+ &  &  & BDQN & 263.20 \\
+ &  &  & Modified OLD & 147.49 \\
+\hline
+\multirow{3}{*}{Fig. 4(b)} & \multirow{3}{*}{50} & \multirow{3}{*}{29} & DQN & 156.74 \\
+ &  &  & BDQN & 314.11 \\
+ &  &  & Modified OLD & 166.46 \\
+\hline
+\multirow{3}{*}{Fig. 4(c)} & \multirow{3}{*}{100} & \multirow{3}{*}{11} & DQN & 273.86 \\
+ &  &  & BDQN & 568.80 \\
+ &  &  & Modified OLD & 289.19 \\
+\hline
+\multirow{3}{*}{Fig. 4(d)} & \multirow{3}{*}{100} & \multirow{3}{*}{29} & DQN & 318.13 \\
+ &  &  & BDQN & 723.36 \\
+ &  &  & Modified OLD & 200.65 \\
+\hline
+\end{tabular}
+\begin{flushleft}
+\footnotesize{$^{a}$Average computational time to complete 50,000 training episodes.}
+\end{flushleft}
+\end{table}
+
+
+ \section{Numerical Test and Experimentation}
+
+The results of numerical experiments are presented in this section. To simulate dynamic pricing, we created a synthetic environment. In the simulations illustrated in Fig. 1, the seller and the buyers make their choices. The efficacy of the suggested MDP formulation with patient clients present is described in the first subsection. The performance of algorithms for scenarios with non-stationary demand and insufficient inventory is compared in the second subsection. We examine pricing policy structures in the final subsection. 
+
+The following is an explanation of the DQN algorithm's processQ-network, parameterized with $\phi$, approximates the Q-function. The stochastic gradient descent method is used to It aims to find \( Q \) by minimizing the mean squared error between the parameterized Q-function \( Q_{\theta} \) and the optimal Q-function \( Q^* \). Since \( Q^* \) is unknown, unlike in supervised learning scenarios, gradients of the mean squared error are computed using the estimated target value, which in the \( t \)-th update is:
+
+\phi_{k+1} = \phi_k - \alpha \left[ \sum_{j \in \mathcal{B}} \left( Q_{\phi_k}(s_j, a_j) - r_j + \gamma \max_{a' \in \mathcal{A}} Q_{\phi_k}(s'_j, a') \right) \nabla_{\phi_k} Q_{\phi_k}(s_j, a_j) \right]
+
+It denotes a minibatch selected from the replay memory  that stores samples that the agent gained from previous interactions with the environment. Due to the moving target in Eq. (A.1), the stability of the SGD method can be degraded. To alleviate this problem, Mnih et al. (2015) used an additional target The Q-network, denoted by \( Q_{\theta^{-}}} \), is used in the update rule. The target value in Eq. (A.1) is substituted with the target network \( Q_{\theta^{-}} \), and it copies the original Q-network every \( \tau \) updates.
+
+ 
+\vspace{1em}
+
+\textbf{Algorithm 1: DQN Algorithm}
+
+\begin{algorithm}
+\caption{DQN algorithm}
+\begin{algorithmic}[1]
+\State Initialize replay memory $D$
+\State Initialize parameters $\phi$ for Q-network
+\State Set $\phi^- = \phi$
+\For{episode = 1, \dots, C}
+    \State Initialize state $s_0$
+    \State Set $t = 0$
+    \While{$s_t$ is not the terminal state}
+        \State Select a random action $a_t$ with probability $\epsilon$, otherwise $a_t = \arg\max_a Q_\phi(s_t, a)$
+        \State Implement action $a_t$ and get reward $r_t$ and next state $s_{t+1}$
+        \State Store transition data $(s_t, a_t, r_t, s_{t+1})$ in replay memory $D$
+        \State Randomly select a minibatch of transitions $(s_j, a_j, r_j, s_{j+1})$ from $D$
+        \State Set target $y_j = 
+        \begin{cases}
+            r_j & \text{if } s_{j+1} \text{ is the terminal state} \\
+            r_j + \max_{a'} Q_{\phi^-}(s_{j+1}, a') & \text{otherwise}
+        \end{cases}$
+        \State Update $\phi$ using the SGD method according to Eq. (A.1) on $y_j$
+        \State Set $t = t + 1$
+    \EndWhile
+    \State Set $\phi^- = \phi$ every $E$ episodes
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+For exploration, the BDQN algorithm makes use of several Q-networks.
+The transition tuples are saved in the shared replay memory, and one network is chosen randomly to perform steps in a training episode. Then, like in DQN, a minibatch of transitions is selected randomly from the replay memory. While some Q-networks update their weights using it, others do not. An agent may attempt several suboptimal actions for several time steps due to the randomness in choosing and updating multiple Q-networks. Osband et al. (2016) demonstrated through numerical experiments that the BDQN agent required a significantly smaller number of training episodes than the DQN agent to escape from suboptimal policies.
+
+
+\begin{algorithm}
+\caption{BDQN algorithm}
+\begin{algorithmic}[1]
+\State Initialize replay memory $D$
+\For{$i = 1$ to $N$}
+    \State Initialize parameters $\phi_i$ for Q-network $i$
+    \State Set $\phi_i^- = \phi_i$
+\EndFor
+\For{episode = 1, \dots, C}
+    \State Select $k \sim \text{Uniform}(1, \dots, N)$
+    \State Initialize state $s_0$
+    \State Set $t = 0$
+    \While{$s_t$ is not the terminal state}
+        \State Set $a_t = \arg\max_a Q_{\phi_k}(s_t, a)$
+        \State Implement action $a_t$ and get reward $r_t$ and next state $s_{t+1}$
+        \For{$i = 1$ to $N$}
+            \State Generate a bootstrap mask $u_i \sim \text{Bernoulli}(\frac{1}{2})$ for Q-network $i$
+        \EndFor
+        \State Set vector of bootstrap masks $\hat{u}_t = (u_1, \dots, u_N)$
+        \State Store transition data $(s_t, a_t, r_t, s_{t+1}, \hat{u}_t)$ in replay memory $D$
+        \State Randomly select a minibatch of transitions $(s_j, a_j, r_j, s_{j+1}, \hat{u}_j)$ from $D$
+        \For{$i = 1$ to $N$}
+            \State Set target $y_j = 
+            \begin{cases}
+                r_j & \text{if } s_{j+1} \text{ is the terminal state} \\
+                r_j + \max_{a'} Q_{\phi_i^-}(s_{j+1}, a') & \text{otherwise}
+            \end{cases}$
+            \If{$i$-th element of $\hat{u}_j$ is equal to 1}
+                \State Update $\phi_i$ using the SGD method in Eq. (A.1) on $y_j$
+            \Else
+                \State do not update
+            \EndIf
+        \EndFor
+        \State Set $t = t + 1$
+    \EndWhile
+    \State Update target networks every $E$ episodes
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+
+\section{Real-World Validation: Indian Airline Pricing Data }
+
+We examined a dataset of 10,683 domestic flights in India, including details like ticket prices, carrier type, route, and number of stops, to confirm the applicability of our findings. The data showed significant trends that matched the outcomes of our simulation.
+The average cost of non-stop flights was ₹5,024, one-stop flights were ₹10,594, and two-stop flights were ₹12,716. The prices of flights with more stopovers were significantly higher. Legacy carriers like Jet Airways and Air India had much higher median fares exceeding ₹9,000, while low-cost airlines like SpiceJet and IndiGo had median prices between ₹3,800 and ₹5,000. For instance, the Bengaluru–Delhi route had fares ranging from ₹3,257 to ₹25,913, indicating a notable price disparity within the same routes. 
+
